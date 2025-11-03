@@ -1,0 +1,1 @@
+# Krita-Lineart-Generator-Plugin
