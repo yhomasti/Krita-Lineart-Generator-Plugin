@@ -21,8 +21,10 @@ class LineArtOMatic(Extension):
     # ---------- deps + core ----------
     def _ensure_deps_and_core(self):
         # make sure Krita sees user-site (usually already true)
-        try: site.addsitedir(site.USER_SITE)
-        except Exception: pass
+        try: 
+            site.addsitedir(site.USER_SITE)
+        except Exception: 
+            pass
         try:
             import numpy as _np  # noqa
             import cv2  # noqa
@@ -42,26 +44,16 @@ class LineArtOMatic(Extension):
         import numpy as np
         app = Krita.instance()
         doc = app.activeDocument()
-        if not doc: return None, None
+        if not doc: 
+            return None, None
         node = doc.activeNode()
-        if not node: return None, None
+        if not node: 
+            return None, None
         w, h = doc.width(), doc.height()
         raw = node.pixelData(0, 0, w, h)  # RGBA8 bytes
         arr = np.frombuffer(bytes(raw), dtype=np.uint8).reshape(h, w, 4)
         bgr = arr[:, :, :3][:, :, ::-1].copy()  # RGBA->BGR
         return bgr, doc
-
-    def _add_layer_from_bgr(self, doc, bgr, name="LineArt (preview)"):
-        import numpy as np
-        h, w, _ = bgr.shape
-        r, g, b = bgr[...,2], bgr[...,1], bgr[...,0]
-        a = np.full_like(r, 255, np.uint8)
-        rgba = np.dstack([r, g, b, a])
-        data = QByteArray(bytes(rgba))
-        layer = doc.createNode(name, "paintLayer")
-        layer.setPixelData(data, 0, 0, w, h)
-        doc.rootNode().addChildNode(layer, None)
-        doc.refreshProjection()
 
     # ---------- action ----------
     def run(self):
@@ -72,7 +64,7 @@ class LineArtOMatic(Extension):
             return
 
         pack = self._active_layer_to_bgr()
-        if pack is None:
+        if pack[0] is None or pack[1] is None:
             QMessageBox.information(None, "LineArt-O-Matic",
                                     "Open a document and select a raster layer first.")
             return
@@ -83,25 +75,5 @@ class LineArtOMatic(Extension):
         
         dialog = LineArtDialog(self.core, bgr, doc)
         dialog.exec_()
-
-        cfg = dict(mode="adaptive", line_width=2, prune_iters=2, noise_min_area=10)
-
-        try:
-            result = self.core.process_numpy(bgr, config=cfg)
-        except Exception as e:
-            QMessageBox.critical(None, "LineArt-O-Matic", f"Processing failed:\n{e}")
-            return
-
-        self._add_layer_from_bgr(doc, result["preview_bgr"], "LineArt (preview)")
-
-        if result.get("svg_paths"):
-            path, _ = QFileDialog.getSaveFileName(
-                None, "Save SVG", "", "SVG Files (*.svg)")
-            if path:
-                h, w = bgr.shape[:2]
-                try:
-                    self.core.save_svg(result["svg_paths"], path, width=w, height=h)
-                except Exception as e:
-                    QMessageBox.critical(None, "LineArt-O-Matic", f"SVG save failed:\n{e}")
 
 Krita.instance().addExtension(LineArtOMatic(Krita.instance()))
