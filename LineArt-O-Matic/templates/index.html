@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LineArt-O-Matic: Professional Edition</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- page header -->
+        <div class="header">
+            <h1>LineArt-O-Matic: Professional Edition</h1>
+            <p>Powered by OpenCV • High-Resolution Processing • Animation Ready</p>
+        </div>
+
+        <!-- main content panel -->
+        <div class="main-panel">
+            <!-- file upload area -->
+            <div class="upload-area" id="uploadArea">
+                <h3>Upload Your Colored Pencil Drawing</h3>
+                <p>Drag & drop your image here or click to browse</p>
+                <p><small>Supports: JPG, PNG, TIFF • Max: 16MB • Best: High-resolution scans</small></p>
+                <br>
+                <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
+                    Choose File
+                </button>
+                <input type="file" id="fileInput" class="file-input" accept="image/*" multiple>
+                
+                <!-- image preview area -->
+                <div id="imagePreview" style="display: none; margin-top: 20px; padding: 20px; background: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef;">
+                    <h4>Uploaded Image Preview:</h4>
+                    <img id="previewImg" style="max-width: 700px; max-height: 500px; border-radius: 8px; border: 2px solid #dee2e6; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" onclick="showFullImage(this.src)">
+                    <p id="imageInfo" style="margin-top: 15px; font-size: 13px; color: #666; font-weight: 500;"></p>
+                    <p style="font-size: 11px; color: #999; margin-top: 5px;">Click image to view full size</p>
+                </div>
+            </div>
+
+            <!-- color processing mode buttons -->
+            <div class="mode-buttons">
+                <div class="mode-btn active" data-mode="whole">Whole Page</div>
+                <div class="mode-btn" data-mode="ignore-color">Ignore Color</div>
+            </div>
+
+            <!-- settings controls -->
+            <div class="controls-grid">
+                <!-- pencil detection settings -->
+                <div class="control-group">
+                    <h3>Pencil Detection</h3>
+                    <div class="control-row">
+                        <label>Pencil Sensitivity:</label>
+                        <input type="range" id="pencilSensitivity" min="5" max="50" value="15">
+                        <span class="value-display" id="pencilValue">15</span>
+                    </div>
+                    <div class="control-row">
+                        <label>Color Variance:</label>
+                        <input type="range" id="colorVariance" min="10" max="100" value="20">
+                        <span class="value-display" id="colorValue">20</span>
+                    </div>
+                    <div class="control-row">
+                        <label>Graphite Boost:</label>
+                        <input type="range" id="graphiteBoost" min="0" max="25" value="12">
+                        <span class="value-display" id="graphiteBoostValue">12</span>
+                    </div>
+                </div>
+
+                <!-- line processing settings -->
+                <div class="control-group">
+                    <h3>Line Processing</h3>
+                    <div class="control-row">
+                        <label>Background Filter:</label>
+                        <input type="range" id="backgroundFilter" min="0" max="50" value="5">
+                        <span class="value-display" id="backgroundValue">5</span>
+                    </div>
+                    <div class="control-row">
+                        <label>Min Line Length:</label>
+                        <input type="range" id="minLength" min="3" max="50" value="8">
+                        <span class="value-display" id="lengthValue">8</span>
+                    </div>
+                    <div class="control-row">
+                        <label>Noise Removal:</label>
+                        <input type="range" id="noiseRemoval" min="10" max="200" value="50">
+                        <span class="value-display" id="noiseValue">50</span>
+                    </div>
+                    <div class="control-row">
+                        <label>Line Smoothing:</label>
+                        <input type="range" id="simplification" min="0.0005" max="0.005" step="0.0005" value="0.001">
+                        <span class="value-display" id="simplificationValue">0.001</span>
+                    </div>
+                </div>
+
+                <!-- output settings -->
+                <div class="control-group">
+                    <h3>Output Settings</h3>
+                    <div class="control-row">
+                        <label>Resolution:</label>
+                        <select id="resolution">
+                            <option value="1920x1080">1920×1080 (Full HD)</option>
+                            <option value="2560x1440">2560×1440 (2K)</option>
+                            <option value="3840x2160" selected>3840×2160 (4K Ultra)</option>
+                            <option value="5120x2880">5120×2880 (5K)</option>
+                        </select>
+                    </div>
+                    <div class="control-row">
+                        <label>Line Width:</label>
+                        <input type="range" id="lineWidth" min="0.5" max="12" step="0.1" value="2.0">
+                        <span class="value-display" id="lineWidthValue">2.0</span>
+                    </div>
+                    <div class="control-row">
+                        <label>Super Smoothing:</label>
+                        <input type="checkbox" id="superSmoothing" checked>
+                    </div>
+                    <div class="control-row">
+                        <label>Curve Smoothing:</label>
+                        <input type="checkbox" id="curveSmoothing" checked>
+                    </div>
+                    <div class="control-row">
+                        <label>Batch Mode:</label>
+                        <input type="checkbox" id="batchMode">
+                    </div>
+                </div>
+            </div>
+
+            <!-- main action buttons -->
+            <div class="action-buttons">
+                <button class="btn btn-primary" id="processBtn" onclick="processImage()" disabled>
+                    Process Image
+                </button>
+                <button class="btn btn-secondary" id="downloadBtn" onclick="downloadSVG()" disabled>
+                    Download SVG
+                </button>
+                <button class="btn btn-danger" id="resetBtn" onclick="resetAll()">
+                    Reset
+                </button>
+            </div>
+
+            <!-- status messages area -->
+            <div id="statusArea"></div>
+
+            <!-- batch processing panel -->
+            <div class="batch-mode" id="batchPanel">
+                <h3>Batch Processing Mode</h3>
+                <p>Process multiple images at once. All files will be processed with the same settings.</p>
+                <div id="batchFileList"></div>
+                <button class="btn btn-primary" id="batchProcessBtn" onclick="processBatch()" disabled>
+                    Process All Files
+                </button>
+            </div>
+        </div>
+
+        <!-- results display grid -->
+        <div class="results-grid" id="resultsGrid" style="display: none;">
+            <div class="result-panel">
+                <h3>Original Drawing</h3>
+                <img id="originalImg" src="" alt="Original" onclick="showFullImage(this.src)">
+                <p style="font-size: 11px; color: #999; margin-top: 5px;">Click to view full resolution</p>
+            </div>
+            <div class="result-panel">
+                <h3>Pencil Detection</h3>
+                <img id="maskImg" src="" alt="Detection Mask" onclick="showFullImage(this.src)">
+                <p style="font-size: 11px; color: #999; margin-top: 5px;">Click to view full resolution</p>
+            </div>
+            <div class="result-panel">
+                <h3>Final Lineart</h3>
+                <img id="lineartImg" src="" alt="Final Lineart" onclick="showFullImage(this.src)">
+                <p style="font-size: 11px; color: #999; margin-top: 5px;">Click to view full resolution</p>
+            </div>
+        </div>
+
+        <!-- processing statistics panel -->
+        <div class="stats-panel" id="statsPanel" style="display: none;">
+            <h3>Processing Statistics</h3>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value" id="contoursFound">0</div>
+                    <div class="stat-label">Lines Detected</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="svgPaths">0</div>
+                    <div class="stat-label">SVG Paths</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="resolution">3840×2160</div>
+                    <div class="stat-label">Resolution</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="processTime">0s</div>
+                    <div class="stat-label">Process Time</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- full size image modal -->
+        <div class="image-modal" id="imageModal" onclick="hideFullImage()">
+            <span class="close">&times;</span>
+            <img id="modalImg" src="">
+        </div>
+
+        <!-- page footer -->
+        <div class="footer">
+            <p>Professional Animation Lineart Generation • OpenCV Powered • High Performance</p>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

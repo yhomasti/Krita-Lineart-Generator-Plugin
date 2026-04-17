@@ -1,0 +1,493 @@
+/* basic page setup */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* main page styling with gradient background */
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #333;
+    line-height: 1.6;
+}
+
+/* main container for all content */
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* header section with title */
+.header {
+    text-align: center;
+    color: white;
+    margin-bottom: 30px;
+}
+
+.header h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.header p {
+    font-size: 1.2em;
+    opacity: 0.9;
+}
+
+/* main white panel that contains everything */
+.main-panel {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    margin-bottom: 20px;
+}
+
+/* file upload area with drag and drop */
+.upload-area {
+    border: 3px dashed #667eea;
+    border-radius: 10px;
+    padding: 40px;
+    text-align: center;
+    background: #f8f9ff;
+    margin-bottom: 30px;
+    transition: all 0.3s ease;
+}
+
+/* hover effect for upload area */
+.upload-area:hover {
+    border-color: #764ba2;
+    background: #f0f2ff;
+}
+
+/* drag over effect */
+.upload-area.dragover {
+    border-color: #28a745;
+    background: #f0fff4;
+}
+
+/* hide the default file input */
+.file-input {
+    display: none;
+}
+
+/* styled upload button */
+.upload-btn {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+/* button hover effect */
+.upload-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* grid layout for controls */
+.controls-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    margin: 30px 0;
+}
+
+/* individual control group styling */
+.control-group {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    border-left: 4px solid #667eea;
+}
+
+/* control group headers */
+.control-group h3 {
+    color: #495057;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* individual control rows */
+.control-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    gap: 15px;
+}
+
+/* labels for controls */
+.control-row label {
+    min-width: 140px;
+    font-weight: 600;
+    color: #495057;
+}
+
+/* styling for range sliders */
+.control-row input[type="range"] {
+    flex: 1;
+    height: 6px;
+    border-radius: 3px;
+    background: #dee2e6;
+    outline: none;
+    -webkit-appearance: none;
+}
+
+/* webkit slider thumb styling */
+.control-row input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #667eea;
+    cursor: pointer;
+}
+
+/* firefox slider thumb styling */
+.control-row input[type="range"]::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #667eea;
+    cursor: pointer;
+    border: none;
+}
+
+/* styling for select dropdowns */
+.control-row select {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    background: white;
+    color: #495057;
+    font-size: 14px;
+}
+
+/* styling for checkboxes */
+.control-row input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #667eea;
+}
+
+/* value display boxes */
+.value-display {
+    min-width: 40px;
+    background: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid #dee2e6;
+    text-align: center;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    color: #495057;
+}
+
+/* action buttons container */
+.action-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 30px 0;
+}
+
+/* base button styling */
+.btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+/* primary button (green) */
+.btn-primary {
+    background: linear-gradient(45deg, #28a745, #20c997);
+    color: white;
+}
+
+/* secondary button (gray) */
+.btn-secondary {
+    background: linear-gradient(45deg, #6c757d, #495057);
+    color: white;
+}
+
+/* danger button (red) */
+.btn-danger {
+    background: linear-gradient(45deg, #dc3545, #c82333);
+    color: white;
+}
+
+/* button hover effects */
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* disabled button styling */
+.btn:disabled {
+    background: #6c757d;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* results grid layout - larger for ultra high quality display */
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+    gap: 25px;
+    margin: 30px 0;
+}
+
+/* individual result panels - larger for ultra quality */
+.result-panel {
+    background: white;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+/* result panel headers */
+.result-panel h3 {
+    color: #495057;
+    margin-bottom: 20px;
+    font-size: 1.3em;
+}
+
+/* result images - ultra high quality display */
+.result-panel img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 2px solid #dee2e6;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* hover effect for images */
+.result-panel img:hover {
+    transform: scale(1.02);
+    border-color: #667eea;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+/* full size image modal - better styling */
+.image-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.95);
+    cursor: pointer;
+}
+
+.image-modal img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 98%;
+    max-height: 98%;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.8);
+}
+
+.image-modal .close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: white;
+    font-size: 50px;
+    font-weight: bold;
+    cursor: pointer;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+    transition: color 0.3s ease;
+}
+
+.image-modal .close:hover {
+    color: #ff6b6b;
+}
+
+/* status message styling */
+.status {
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin: 10px 0;
+    font-weight: bold;
+}
+
+/* success status */
+.status.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+/* error status */
+.status.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* processing status */
+.status.processing {
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeaa7;
+}
+
+/* stats panel */
+.stats-panel {
+    background: #e9ecef;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+/* stats grid layout */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+}
+
+/* individual stat items */
+.stat-item {
+    text-align: center;
+}
+
+/* stat values */
+.stat-value {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #667eea;
+}
+
+/* stat labels */
+.stat-label {
+    color: #6c757d;
+    font-size: 0.9em;
+}
+
+/* batch mode panel (initially hidden) */
+.batch-mode {
+    display: none;
+    background: #fff8e1;
+    border: 2px solid #ffc107;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+/* show batch mode when active */
+.batch-mode.active {
+    display: block;
+}
+
+/* mode buttons for color processing */
+.mode-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.mode-btn {
+    padding: 12px 25px;
+    background: #e9ecef;
+    border: 2px solid #dee2e6;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    color: #495057;
+}
+
+.mode-btn:hover {
+    background: #f8f9fa;
+    border-color: #adb5bd;
+}
+
+.mode-btn.active {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+/* footer styling */
+.footer {
+    text-align: center;
+    color: white;
+    margin-top: 30px;
+    opacity: 0.8;
+}
+
+/* mobile responsive design - updated for larger displays */
+@media (max-width: 768px) {
+    .controls-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .results-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .result-panel {
+        padding: 15px;
+    }
+    
+    .result-panel h3 {
+        font-size: 1.1em;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .image-modal .close {
+        font-size: 35px;
+        top: 15px;
+        right: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .result-panel {
+        padding: 10px;
+    }
+    
+    .result-panel h3 {
+        font-size: 1em;
+        margin-bottom: 10px;
+    }
+}
